@@ -6,12 +6,13 @@ import SearchBar from './components/SearchBar';
 
 import services from './data/services'
 import products from './data/products'
+import ItemRichDescription from './components/ItemRichDescription';
 
 const AppStyled = styled.div`
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
   display: flex;
   flex-direction: column;
-
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
   box-sizing: border-box;
   height: 100vh;
@@ -64,14 +65,17 @@ const DATA = {
 const App = () => {
   const [currentSearch, setCurrentSearch] = useState('')
   const [currentTab, setCurrentTab] = useState(TABS.PRODUCTS)
+  const [currentSelectedItem, setCurrentSelectedItem] = useState(false)
 
   const currentData = useMemo(() => DATA[currentTab], [currentTab])
+
   const currentFilteredData = useMemo(
     () => currentSearch.length
-      ? currentData.filter(({title}) => title.toLowerCase().includes(currentSearch.toLowerCase()))
+      ? currentData.filter(({ title }) => title.toLowerCase().includes(currentSearch.toLowerCase()))
       : currentData,
     [currentData, currentSearch]
   )
+
   const tabPlaceHolder = useMemo(() => PLACEHOLDERS[currentTab], [currentTab])
 
   useEffect(() => {
@@ -83,38 +87,49 @@ const App = () => {
   }
 
   return (
-    <AppStyled>
-      <SearchBar
-        value={currentSearch}
-        placeholder={tabPlaceHolder}
-        onChange={handleSearchBarOnChange}
-      />
-      <ScrollableWrapper>
-        {
-          currentFilteredData.map(({ id, src, title, description, price }) => {
-            return (
-              <Item
-                key={id}
-                src={src}
-                title={title}
-                description={description}
-                price={price}
-                onClick={() => console.log('asduhaudhauhduashd')}
-              />
-            )
-          })
-        }
-      </ScrollableWrapper>
-      <Footer
-        options={
-          Object
-            .values(TABS)
-            .map(key => TAB_NAMES[key])
-        }
-        selected={currentTab}
-        onTabClick={setCurrentTab}
-      />
-    </AppStyled>
+    <>
+      {
+        currentSelectedItem &&
+        <ItemRichDescription
+          item={currentSelectedItem}
+          onClose={() => setCurrentSelectedItem(null)}
+        />
+      }
+      <AppStyled>
+        <SearchBar
+          value={currentSearch}
+          placeholder={tabPlaceHolder}
+          onChange={handleSearchBarOnChange}
+        />
+        <ScrollableWrapper>
+          {
+            currentFilteredData.map((item) => {
+              const { id, src, title, description, price } = item
+
+              return (
+                <Item
+                  key={id}
+                  src={src}
+                  title={title}
+                  description={description}
+                  price={price}
+                  onClick={() => setCurrentSelectedItem(item)}
+                />
+              )
+            })
+          }
+        </ScrollableWrapper>
+        <Footer
+          options={
+            Object
+              .values(TABS)
+              .map(key => TAB_NAMES[key])
+          }
+          selected={currentTab}
+          onTabClick={setCurrentTab}
+        />
+      </AppStyled>
+    </>
   )
 }
 
