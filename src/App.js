@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import Footer from './components/Footer';
 import Item from './components/Item';
 import SearchBar from './components/SearchBar';
-
-import services from './data/services'
-import products from './data/products'
 import ItemRichDescription from './components/ItemRichDescription';
+
+import jobs from './data/jobs'
+import products from './data/products'
+import services from './data/services'
 
 const AppStyled = styled.div`
   @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
@@ -45,21 +46,25 @@ const ScrollableWrapper = styled.div`
 const TABS = {
   'PRODUCTS': 0,
   'SERVICES': 1,
+  'JOBS': 2,
 }
 
 const PLACEHOLDERS = {
   [TABS.PRODUCTS]: 'Procure um produto',
-  [TABS.SERVICES]: 'Procure um serviço'
+  [TABS.SERVICES]: 'Procure um serviço',
+  [TABS.JOBS]: 'Procure uma vaga',
 }
 
 const TAB_NAMES = {
   [TABS.PRODUCTS]: 'Produtos',
-  [TABS.SERVICES]: 'Serviços'
+  [TABS.SERVICES]: 'Serviços',
+  [TABS.JOBS]: 'Vagas',
 }
 
 const DATA = {
   [TABS.PRODUCTS]: products,
   [TABS.SERVICES]: services,
+  [TABS.JOBS]: jobs,
 }
 
 const App = () => {
