@@ -80,6 +80,8 @@ const App = () => {
 
   useEffect(() => {
     if (currentSearch.length) setCurrentSearch('')
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTab])
 
   const handleSearchBarOnChange = (e) => {
